@@ -35,7 +35,13 @@ class HostPromptDialog : DialogWrapper(true) {
 
     override fun createCenterPanel(): JComponent = panel
 
-    fun getHost(): String = hostTextField.text.trim()
+    fun getHost(): String = normalizeHost(hostTextField.text.trim())
+
+    fun normalizeHost(input: String): String {
+        val regex = Regex("""i-[a-f0-9]+""")
+        val id = regex.find(input)?.value ?: return input
+        return "$id.workdaysuv.com"
+    }
 
     override fun doOKAction() {
         // Save host when OK is pressed
